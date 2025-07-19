@@ -18,12 +18,8 @@ if (!process.env.STRIPE_SECRET_KEY && typeof window === 'undefined') {
 }
 
 // Server-side Stripe (for API routes)
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'missing_stripe_key', {
+// Note: We're using non-null assertion (!) to tell TypeScript we know this might be null
+// but we'll handle that at runtime in the API routes that use this
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-06-30.basil',
 });
-
-// Stripe configuration constants
-export const STRIPE_CONFIG = {
-  currency: 'usd',
-  payment_method_types: ['card'],
-} as const

@@ -1,4 +1,4 @@
-import { stripe } from '@/lib/stripe'
+import stripe from '@/lib/stripe-server'
 import { supabase } from '@/lib/supabase'
 
 export interface PaymentIntentData {
