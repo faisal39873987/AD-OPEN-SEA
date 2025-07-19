@@ -3,19 +3,35 @@ import { stripe } from '@/lib/stripe'
 import { supabase } from '@/lib/supabase'
 import Stripe from 'stripe'
 
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!
+// Get the webhook secret or log an error if missing
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET
+if (!endpointSecret) {
+  console.error('⚠️ STRIPE_WEBHOOK_SECRET is not defined. Webhook verification will fail.');
+}
 
 export async function POST(req: NextRequest) {
+  // Verify Stripe is properly configured
+  if (!process.env.STRIPE_SECRET_KEY || !endpointSecret) {
+    console.error('Missing required Stripe environment variables');
+    return NextResponse.json({ error: 'Payment service is not configured correctly' }, { status: 500 });
+  }
+
   const body = await req.text()
-  const signature = req.headers.get('stripe-signature')!
+  const signature = req.headers.get('stripe-signature')
+  
+  // If signature is missing, return an error
+  if (!signature) {
+    console.error('Stripe signature is missing from the request');
+    return NextResponse.json({ error: 'Webhook signature missing' }, { status: 400 });
+  }
 
   let event: Stripe.Event
 
   try {
     event = stripe.webhooks.constructEvent(body, signature, endpointSecret)
-  } catch (err) {
-    console.error(`Webhook signature verification failed.`, err)
-    return NextResponse.json({ error: 'Webhook signature verification failed' }, { status: 400 })
+  } catch (err: any) {
+    console.error(`Webhook signature verification failed:`, err.message);
+    return NextResponse.json({ error: 'Webhook signature verification failed' }, { status: 400 });
   }
 
   // Handle the event

@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import stripe from '@/lib/stripe-server'
 
 export async function POST(req: NextRequest) {
+  // Verify Stripe API key is available
+  if (!process.env.STRIPE_SECRET_KEY) {
+    console.error('Missing STRIPE_SECRET_KEY environment variable');
+    return NextResponse.json(
+      { error: 'Payment service is not configured correctly' },
+      { status: 500 }
+    );
+  }
+
   try {
     const { amount, currency = 'aed', description, metadata = {} } = await req.json()
 
@@ -32,10 +41,27 @@ export async function POST(req: NextRequest) {
 
     // Return the client secret to the client
     return NextResponse.json({ clientSecret: paymentIntent.client_secret })
-  } catch (error) {
-    console.error('Error creating payment intent:', error)
+  } catch (error: any) {
+    console.error('Error creating payment intent:', error.message);
+    
+    // Handle specific Stripe errors
+    if (error.type === 'StripeAuthenticationError') {
+      return NextResponse.json(
+        { error: 'Payment service authentication failed' },
+        { status: 500 }
+      );
+    }
+    
+    if (error.type === 'StripeInvalidRequestError') {
+      return NextResponse.json(
+        { error: 'Invalid payment request' },
+        { status: 400 }
+      );
+    }
+    
+    // Generic error response
     return NextResponse.json(
-      { error: 'Error creating payment intent' },
+      { error: 'Error processing payment' },
       { status: 500 }
     )
   }

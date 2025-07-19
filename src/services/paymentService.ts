@@ -20,6 +20,11 @@ export interface CreatePaymentIntentResponse {
 export async function createPaymentIntent(
   data: PaymentIntentData
 ): Promise<CreatePaymentIntentResponse> {
+  // Verify Stripe is properly configured
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error('Payment service is not configured correctly');
+  }
+
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(data.amount * 100), // Convert to cents
@@ -35,9 +40,19 @@ export async function createPaymentIntent(
       clientSecret: paymentIntent.client_secret!,
       paymentIntentId: paymentIntent.id,
     }
-  } catch (error) {
-    console.error('Error creating payment intent:', error)
-    throw new Error('Failed to create payment intent')
+  } catch (error: any) {
+    console.error('Error creating payment intent:', error.message);
+    
+    // More descriptive error based on the error type
+    if (error.type === 'StripeAuthenticationError') {
+      throw new Error('Payment service authentication failed');
+    } else if (error.type === 'StripeInvalidRequestError') {
+      throw new Error(`Invalid payment request: ${error.message}`);
+    } else if (error.type === 'StripeAPIError') {
+      throw new Error('Payment service temporarily unavailable');
+    } else {
+      throw new Error('Failed to process payment');
+    }
   }
 }
 
