@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
       break
 
     default:
-      console.log(`Unhandled event type ${event.type}`)
+      // Unhandled event type
   }
 
   return NextResponse.json({ received: true })
@@ -52,9 +52,8 @@ async function handleSuccessfulPayment(paymentIntent: Stripe.PaymentIntent) {
 
     if (error) {
       console.error('Error updating booking after successful payment:', error)
-    } else {
-      console.log(`Payment succeeded for booking ${bookingId}`)
-    }
+    } 
+    // Payment succeeded
   }
 }
 

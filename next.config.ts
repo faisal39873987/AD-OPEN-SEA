@@ -6,6 +6,8 @@ const bundleAnalyzer = withBundleAnalyzer({
 });
 
 const nextConfig: NextConfig = {
+  output: 'standalone', // Optimizes for production deployments
+  distDir: '.next', // Explicitly define build output directory
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.
@@ -17,7 +19,7 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['images.unsplash.com'],
+    domains: ['images.unsplash.com', 'cceuyhebxxqafmrmnqhq.supabase.co', 'avatars.githubusercontent.com', 'adplus.app'],
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
@@ -28,11 +30,13 @@ const nextConfig: NextConfig = {
   //   dest: 'public',
   //   disable: process.env.NODE_ENV === 'development',
   // },
+  // Production-specific configuration
+  productionBrowserSourceMaps: true, // Helps with error tracking in production
+  poweredByHeader: false, // Remove x-powered-by header for security
   experimental: {
     optimizeCss: true,
     scrollRestoration: true,
   },
-  poweredByHeader: false,
 };
 
 export default bundleAnalyzer(nextConfig);

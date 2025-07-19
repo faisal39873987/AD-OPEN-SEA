@@ -69,9 +69,7 @@ function sendToAnalytics(metric: MetricPayload) {
   }
   
   // Also log to console in development
-  if (process.env.NODE_ENV === 'development') {
-    console.log('[Web Vitals]', metric.name, metric.value, categorizeMetric(metric.name, metric.value));
-  }
+  // No logs in production
 }
 
 /**
@@ -114,9 +112,7 @@ export function markPerformance(markName: string) {
       const duration = entries[0].duration;
       
       // Log and send the custom measurement
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`[Custom Timing] ${markName}: ${duration.toFixed(2)}ms`);
-      }
+      // Only log in development
       
       sendToAnalytics({
         name: `custom:${markName}`,

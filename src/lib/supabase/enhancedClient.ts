@@ -45,7 +45,7 @@ const wrappedClient = new Proxy(baseClient, {
                   // Check cache first
                   const cached = queryCache.get(cacheKey)
                   if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-                    console.log(`Cache hit for ${table} query`)
+                    // Cache hit
                     return Promise.resolve(cached.data).then(onFulfilled, onRejected)
                   }
                   
@@ -90,7 +90,7 @@ export const supabase = createMonitoredSupabaseClient(wrappedClient)
 // Method to clear the cache when needed
 export function clearSupabaseCache() {
   queryCache.clear()
-  console.log('Supabase query cache cleared')
+  // Cache cleared
 }
 
 // Method to invalidate specific table cache
@@ -109,5 +109,5 @@ export function invalidateTableCache(table: string) {
   })
   
   keysToDelete.forEach(key => queryCache.delete(key))
-  console.log(`Cache invalidated for table: ${table}`)
+  // Cache invalidated for table
 }

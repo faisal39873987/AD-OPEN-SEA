@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow access to specific directories
+Disallow: /api/
+Disallow: /_next/static/
+
+# Sitemap location
+Sitemap: https://adplus.app/sitemap.xml
