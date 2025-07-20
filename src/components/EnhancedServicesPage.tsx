@@ -164,37 +164,7 @@ export default function EnhancedServicesPage() {
       } catch (error) {
         console.error('Error fetching service providers:', error);
         setError(error instanceof Error ? error.message : 'An unknown error occurred');
-        
-        // Mock data for demonstration only
-        const mockData: ServiceProvider[] = [
-          {
-            id: '1',
-            name: 'Ahmed Al Mansouri',
-            service_category: 'خدم منازل',
-            description: 'Professional cleaning specialist with 8+ years experience. Eco-friendly products and flexible scheduling.',
-            price: 65,
-            location: 'Abu Dhabi Marina',
-            phone: '+971501234567',
-            whatsapp: '+971501234567',
-            instagram: 'ahmed_cleaning',
-            available: true,
-            created_at: new Date().toISOString()
-          },
-          {
-            id: '2', 
-            name: 'Maria Santos',
-            service_category: 'خدم منازل',
-            description: 'Reliable and thorough cleaning service with attention to detail. Available weekends.',
-            price: 55,
-            location: 'Al Khalidiyah',
-            phone: '+971502345678',
-            whatsapp: '+971502345678',
-            instagram: 'maria_cleaning',
-            available: true,
-            created_at: new Date().toISOString()
-          }
-        ];
-        setServiceProviders(mockData);
+        setServiceProviders([]);
       }
     } finally {
       setLoading(false);
