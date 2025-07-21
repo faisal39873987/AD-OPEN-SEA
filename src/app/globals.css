@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/* Global CSS Variables for Black and White Design */
+:root {
+  /* Light Theme Variables */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8f8f8;
+  --color-bg-tertiary: #f1f5f9;
+  --color-text-primary: #000000;
+  --color-text-secondary: #262626;
+  --color-text-muted: #525252;
+  --color-border: #e6e6e6;
+  --color-border-hover: #d4d4d4;
+  --color-accent: #000000;
+  --color-accent-hover: #262626;
+  
+  /* Component specific variables */
+  --color-card-bg: #ffffff;
+  --color-input-bg: #ffffff;
+  --color-button-bg: #ffffff;
+  --color-sidebar-bg: #f8f8f8;
+  --color-nav-bg: #ffffff;
+  --color-footer-bg: #000000;
+}
+
+/* Global Base Styles */
+html, body, #__next {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+html {
+  color-scheme: light;
+  background-color: var(--color-bg-primary);
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+/* Professional Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-hover);
+}
+
+/* Form Elements */
+input, textarea, select {
+  background-color: var(--color-input-bg);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+button {
+  background-color: var(--color-button-bg);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+
+button:hover {
+  border-color: var(--color-border-hover);
+}

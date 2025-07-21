@@ -1,0 +1,67 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run linting
+        run: npm run lint
+      
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+      
+      # This is a simpler approach for Vercel deployment
+      # Vercel now has GitHub integration that can be used instead of this workflow
+      - name: Print deployment instructions
+        run: |
+          echo "========================================================"
+          echo "🔷 VERCEL DEPLOYMENT INFORMATION"
+          echo "========================================================"
+          echo ""
+          echo "For optimal deployment to Vercel, connect your GitHub repository to Vercel:"
+          echo ""
+          echo "1. Go to https://vercel.com/new"
+          echo "2. Import your GitHub repository: AD-OPEN-SEA"
+          echo "3. Configure your project settings"
+          echo "4. Add the following environment variables:"
+          echo "   - NEXT_PUBLIC_SUPABASE_URL"
+          echo "   - NEXT_PUBLIC_SUPABASE_ANON_KEY"
+          echo "   - SUPABASE_SERVICE_ROLE_KEY"
+          echo "   - OPENAI_API_KEY (Required for GPT fallback)"
+          echo "   - STRIPE_SECRET_KEY"
+          echo "   - STRIPE_PUBLISHABLE_KEY"
+          echo "   - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY"
+          echo "   - STRIPE_WEBHOOK_SECRET"
+          echo "   - NEXT_PUBLIC_SITE_URL"
+          echo ""
+          echo "5. Deploy your application"
+          echo ""
+          echo "========================================================"
+          echo ""
+          echo "✅ Your code has been successfully built and is ready for deployment."

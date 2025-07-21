@@ -1,0 +1,22 @@
+feat: implement GPT-Supabase Intelligent Assistant
+
+This commit implements the GPT-Supabase Intelligent Assistant with a smart router
+that searches Supabase for service data first and falls back to GPT when no
+relevant services are found.
+
+Key changes:
+- Created Supabase API layer for service data access
+- Implemented smart router between Supabase and OpenAI
+- Updated chat API to use the smart router
+- Added chat session management and history storage
+- Created database verification and sample data scripts
+- Added deployment automation for adplus.app
+- Updated documentation with implementation details
+
+The implementation follows the 4-phase plan:
+1. Supabase API Layer
+2. Smart Router
+3. Chat Interface Update
+4. Deployment System
+
+This completes the final phase of the AD Pulse project.
