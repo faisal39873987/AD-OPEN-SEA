@@ -64,7 +64,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
       });
       if (error) throw error;
     } catch (error: any) {
-      setMessage(error.message || 'An error occurred');
+      setMessage(error.message || 'حدث خطأ');
     }
   };
 
@@ -181,7 +181,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
               {/* Message */}
               {message && (
                 <div className={`text-sm p-3 rounded-md ${
-                  message.includes('error') || message.includes('Error')
+                  message.includes('خطأ') || message.includes('Error')
                     ? 'bg-red-900 text-red-200'
                     : 'bg-green-900 text-green-200'
                 }`}>

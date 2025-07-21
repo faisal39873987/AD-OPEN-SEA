@@ -72,6 +72,12 @@ CRITICAL_VARS=(
   "NEXT_PUBLIC_STRIPE_PLUS_YEARLY_PRICE_ID"
   "NEXT_PUBLIC_STRIPE_TEAM_MONTHLY_PRICE_ID"
   "NEXT_PUBLIC_STRIPE_TEAM_YEARLY_PRICE_ID"
+  "SUPABASE_SECRET_KEY"
+  "SUPABASE_PUBLISHABLE_KEY"
+  "SUPABASE_DB_PASSWORD"
+  "SUPABASE_JWT_SECRET"
+  "SUPABASE_STANDBY_KEY"
+  "SUPABASE_CURRENT_KEY"
 )
 
 # Set each environment variable in Vercel
@@ -86,13 +92,16 @@ for var in "${CRITICAL_VARS[@]}"; do
   fi
   
   echo -e "Setting ${var}..."
+  # Remove the variable first if it exists
+  vercel env rm ${var} production -y &>/dev/null
+  # Then add it again
   vercel env add plain ${var} production <<< "$value" &>/dev/null
   
   if [ $? -eq 0 ]; then
-    echo -e "${GREEN}✅ Successfully added ${var}${NC}"
+    echo -e "${GREEN}✅ Successfully updated ${var}${NC}"
     success_count=$((success_count+1))
   else
-    echo -e "${YELLOW}⚠️ Variable may already exist in Vercel: ${var}${NC}"
+    echo -e "${RED}❌ Failed to update ${var}${NC}"
   fi
 done
 
